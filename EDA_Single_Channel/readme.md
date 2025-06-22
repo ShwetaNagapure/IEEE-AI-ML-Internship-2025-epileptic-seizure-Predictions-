@@ -1,4 +1,4 @@
-# 🧠 EEG Seizure Detection - EDA and Spectrogram Analysis
+# EEG Seizure Detection - EDA and Spectrogram Analysis
 
 This project explores EEG signal data from the **Bonn University Single-Channel Dataset** to analyze seizure vs non-seizure brain activity using Exploratory Data Analysis (EDA) and frequency-domain representations (spectrograms). It also includes advanced preprocessing and feature extraction for seizure prediction.
 
@@ -48,7 +48,7 @@ If you use this dataset, **please cite the following**:
 
 ---
 
-## 🛠 Dependencies
+##  Dependencies
 
 - Python 3.x
 - pandas
