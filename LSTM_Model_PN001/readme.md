@@ -1,4 +1,4 @@
-# 🧠 EEG Seizure Prediction using LSTM
+#  EEG Seizure Prediction using LSTM 
 
 This project focuses on predicting epileptic seizures using EEG data in **EDF format** with a **Long Short-Term Memory (LSTM)** model built using **PyTorch**.
 
@@ -6,7 +6,7 @@ This project focuses on predicting epileptic seizures using EEG data in **EDF fo
 
 ##  Dataset
 
-We use EDF recordings containing annotated seizure events. The dataset consists of 5 EDF files:
+We use EDF recordings containing annotated seizure events. For this prototype, we only use data from patient PN00, extracted from the Siena Scalp EEG Database 1.0.0.
 
 - `PN00-1.edf`
 - `PN00-2.edf`
