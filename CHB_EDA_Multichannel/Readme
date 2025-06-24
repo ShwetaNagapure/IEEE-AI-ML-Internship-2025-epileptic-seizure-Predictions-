@@ -1,0 +1,52 @@
+Exploratory Data Analysis (EDA) on CHB-MIT EEG Data
+
+Project Overview
+This repository contains the Exploratory Data Analysis (EDA) performed on the chb01_01.edf file from the CHB-MIT Scalp EEG Database. The primary goal of this EDA is to prepare clean, structured EEG data for training deep learning models (e.g., LSTMs/RNNs) for seizure detection.
+
+
+Dataset Used
+Dataset: CHB-MIT Scalp EEG Database (PhysioNet) 
+Subject: chb01 (Patient 1, as part of the dataset) 
+Files Analyzed: chb01_01.edf 
+Sampling Rate: 256.0 Hz 
+Channels: 23 EEG channels (bipolar derivations, mapped to approximate 10-20 system during montage application) 
+
+Key EDA Steps & Findings
+1. Data Loading & Initial Inspection
+File: chb01_01.edf (23 EEG channels, 256 Hz sampling rate, ~4.4 minutes duration).
+Issues Faced: Duplicate channel names (e.g., 'T8-P8') and invalid timestamps.
+Solutions: Channels were renamed uniquely (e.g., FP1-F7 → FP1). Metadata errors were ignored as they did not impact data quality.
+
+2. Raw Signal Visualization
+Observations: High-amplitude noise was observed in low frequencies (<0.5 Hz) and muscle artifacts (>45 Hz). Line noise was also present at 60 Hz.
+
+Action: A bandpass filter (0.5–45 Hz) was applied to remove the identified noise.
+
+3. Channel Management
+Renamed Channels: Bipolar names (e.g., FP1-F7) were converted to single-electrode names.
+Applied 10-20 Montage: Electrodes were mapped to standard scalp positions for spatial analysis.
+
+4. Frequency Analysis (PSD & Topomaps)
+Frequency Bands Analyzed: Delta (0.5–4 Hz), Theta (4–8 Hz), Alpha (8–12 Hz), Beta (13–30 Hz), Gamma (30–45 Hz).
+
+Key Findings:
+Dominant power was observed in the Delta/Theta bands, which is typical for resting EEG.
+Gamma power was localized to frontal/temporal regions, noted as a potential seizure indicator.
+
+5. Data Segmentation
+Epochs: Data was split into 10-second, non-overlapping windows by default.
+Future Need: For improved model context, using 50% overlapping windows is identified as a necessary future step.
+
+Critical Observations for Model Training (LSTM/RNN)
+Class Imbalance: Seizure segments are expected to be rare, typically less than 5% of the total data. 
+
+Solution: To mitigate the impact of imbalance, oversampling seizure events or using weighted loss functions during model training will be crucial.
+Input Shape for LSTM/RNN: Each sample will have an input shape of (2560 timesteps, 23 channels) (10 sec × 256 Hz).
+Preprocessing Impact: Filtering (0.5–45 Hz) significantly improves signal quality.
+Normalization: Normalization is identified as a crucial future step to stabilize training.
+
+Tools Used
+Python Libraries: MNE-Python, NumPy, Matplotlib.
+File Formats: Data was converted from EDF to FIF (MNE’s optimized format).
+Report Prepared By: Snehal Deshmukh (PNC-10) 
+Date: 24/06/2025
