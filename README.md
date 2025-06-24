@@ -6,7 +6,7 @@
 **Interns:**  
 - Shweta Nagapure  
 - Snehal Deshmukh  
-- Tejas K
+- Tejas Kotwal
 
 **Mentor:**  
 Dr. Trupti Kudale
