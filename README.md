@@ -9,7 +9,7 @@
 - Tejas Kotwal
 
 **Mentor:**  
-Dr. Trupti Kudale
+Prof. Trupti Kudale
 
 ---
 
