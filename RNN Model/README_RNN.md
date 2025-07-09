@@ -90,7 +90,3 @@ plt.show()
 - PyTorch
 - numpy, matplotlib, seaborn, scikit-learn, mne, scipy
 
-## Author / Credits
-- Notebook and code: [Your Name]
-- Data: Provided EEG EDF files
-- Guidance: AI assistant 
