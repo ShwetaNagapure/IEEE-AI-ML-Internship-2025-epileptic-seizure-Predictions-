@@ -1,4 +1,5 @@
 📊 BiLSTM Seizure Prediction Model
+
 This project implements a deep learning pipeline for predicting epileptic seizures using EEG data from the Siena Scalp EEG Database 1.0.0. The final model uses a Bidirectional Long Short-Term Memory (BiLSTM) architecture trained on 5-second EEG segments from 34 channels.
 
 🔧 Model Architecture
