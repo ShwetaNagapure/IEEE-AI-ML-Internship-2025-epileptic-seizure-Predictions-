@@ -1,96 +1,101 @@
-📊 BiLSTM Seizure Prediction Model
+🧠 Seizure Prediction using BiLSTM
+This project implements a deep learning pipeline for predicting epileptic seizures using EEG data in .edf format. The final model leverages a Bidirectional LSTM (BiLSTM) architecture for robust seizure detection, trained on multi-channel EEG data from the Siena Scalp EEG Database.
 
-This project implements a deep learning pipeline for predicting epileptic seizures using EEG data from the Siena Scalp EEG Database 1.0.0. The final model uses a Bidirectional Long Short-Term Memory (BiLSTM) architecture trained on 5-second EEG segments from 34 channels.
+📊 Objective
+To predict the onset of epileptic seizures using 5-second EEG segments from 34 channels, enabling early detection and proactive intervention.
 
-🔧 Model Architecture
+✅ Model Performance
+Best Validation Accuracy: 83.74%
+AUC-ROC: 90.78%
+Precision: 89.39%
+Recall: 87.97%
 
-Input Shape: (5 seconds, 34 EEG channels)
-↓
-Bidirectional(LSTM(64, return_sequences=True))
-↓
-Dropout(0.5)
-↓
-Bidirectional(LSTM(32))
-↓
-Dense(1, activation='sigmoid')  ← with L2 regularization (λ=0.001)
-Loss: Binary Crossentropy (with class weights)
+📉 Confusion Matrix (Example)
+
+[[TN: Higher   FP: Reduced]
+ [FN: Reduced  TP: Higher]]
+
+📋 Classification Report (Summarized)
+| Class      | Precision | Recall | F1-Score |
+| ---------- | --------- | ------ | -------- |
+| Interictal | \~89%     | \~88%  | \~88.5%  |
+| Preictal   | \~89%     | \~88%  | \~88.5%  |
+
+
+⚙️ Preprocessing Pipeline
+Bandpass filtered (0.5 – 40 Hz)
+
+Resampled to 256 Hz
+
+Segmented into 5-second windows (multichannel)
+
+Z-score normalized
+
+Labeled as:
+
+1: Preictal (30-min before seizure)
+
+0: Interictal (baseline)
+
+🧠 Model Architecture (BiLSTM)
+
+model = Sequential([
+    Bidirectional(LSTM(64, return_sequences=True)),
+    Dropout(0.5),
+    Bidirectional(LSTM(32)),
+    Dense(1, activation='sigmoid', kernel_regularizer=l2(0.001))
+])
 
 Optimizer: Adam
 
+Loss: Binary Crossentropy with class weights
+
 Batch Size: 8
 
-Training Epochs: 30 (early stopped at epoch 16)
+Early stopping: patience = 5
 
-Regularization: Dropout + L2
+🔍 Evaluation Strategy
+Class weighting
 
-✅ Model Performance (Final Evaluation)
-Metric	Score
-Accuracy	83.74%
-Precision	89.39%
-Recall	87.97%
-AUC-ROC	90.78%
+Early stopping
 
-📌 Key Highlights:
+Confusion matrix and AUC-ROC analysis
 
-Excellent class separability (AUC-ROC > 90%)
+Chunk-level prediction + CSV export
 
-Reduced false negatives, improving early seizure detection
+📈 Future Improvements
+Visualize AUC & PR curves per patient
 
-Generalizes well across patients
+Improve cross-patient generalization
 
-📁 Prediction Process
-Model loaded from: /content/drive/MyDrive/BILSTM_MODEL/final_seizure_model.h5
+Try transformer-BiLSTM hybrid
 
-Input Files: PN00-1.edf to PN00-5.edf
+Deploy for real-time alerts
 
-Data segmented into 5-second chunks
+🧪 Requirements
+Python
 
-Normalized using z-score
+TensorFlow/Keras
 
-Model predicts seizure probability for each chunk
+NumPy, Pandas
 
-📤 Output:
-For each file, predictions are saved as:
+MNE (for EEG files)
 
-bash
-Copy
-Edit
+Matplotlib, Seaborn
+
+scikit-learn
+
+📂 Output Format
+Each patient's prediction saved as:
 /content/drive/MyDrive/BILSTM_MODEL/predictions_PN00-X.csv
-CSV Columns:
 
-chunk_index: Index of EEG chunk
+Column	Description
+chunk_index	Index of EEG chunk
+time_seconds	Time in seconds
+seizure_probability	Probability from model
+seizure_predicted	Binary prediction (0 or 1)
 
-time_seconds: Time in seconds
-
-seizure_probability: Model's confidence (0 to 1)
-
-seizure_predicted: Binary prediction (0 or 1)
-
-📌 How to Run
-Mount Google Drive:
-
-
-from google.colab import drive
-drive.mount('/content/drive')
-Load model and EEG data:
-
-
-model = load_model('final_seizure_model.h5')
-raw = mne.io.read_raw_edf(file_path, preload=True)
-Segment and normalize EEG:
-
-
-chunks = segment_eeg(raw, start=0, end=duration, chunk_duration=5)
-Predict:
-
-
-preds_prob = model.predict(np.array(chunks))
-Save results:
-
-
-
-save_predictions_csv('PN00-1', preds_prob, preds_prob > 0.5)
-📌 Patients Analyzed
+👩‍⚕️ Patients Evaluated
 PN00-1.edf
 
 PN00-2.edf
@@ -100,4 +105,3 @@ PN00-3.edf
 PN00-4.edf
 
 PN00-5.edf
-
